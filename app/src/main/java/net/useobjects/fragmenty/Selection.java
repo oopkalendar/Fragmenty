@@ -1,0 +1,21 @@
+package net.useobjects.fragmenty;
+
+/**
+ * Created by vladek on 23.9.2015.
+ */
+public enum Selection {
+    A ("kliknute tlacidlo A"),
+    B ("kliknute tlacidlo B"),
+    NOTHING ("nic nestlacene");
+
+    private String text;
+
+    Selection(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return text;
+    }
+}
