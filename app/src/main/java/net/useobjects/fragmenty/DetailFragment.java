@@ -41,18 +41,18 @@ public class DetailFragment extends Fragment {
           * @return A new instance of fragment DetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DetailFragment newInstance(String infoString) {
+    public static DetailFragment newInstance(Selection selection) {
         Log.d("Aplikacia", "DetailFragment.newInstance");
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
-        args.putString("info", infoString);
+        args.putString("info", selection.toInfoString());
         fragment.setArguments(args);
         return fragment;
     }
 
     public DetailFragment() {
         // Required empty public constructor
-        Log.d("Aplikacia", "DetailFragment konstruktor");
+        Log.d("Aplikacia", "DetailFragment konstruktor " + Integer.toHexString(System.identityHashCode(this)));
     }
 
     @Override
@@ -66,6 +66,7 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("Aplikacia", "DetailFragment.onCreateView (container = " + Integer.toHexString(System.identityHashCode(container)) + ")");
         // Inflate the layout for this fragment
         if(container == null) {
             return null;
@@ -75,7 +76,7 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.d("Aplikacia", "DetailFragment.onViewCreated zaciatok");
+        Log.d("Aplikacia", "DetailFragment.onViewCreated zaciatok " + Integer.toHexString(System.identityHashCode(this)));
         super.onViewCreated(view, savedInstanceState);
         TextView textView = (TextView) getActivity().findViewById(R.id.detailText);
         textView.setText(info);
@@ -84,7 +85,7 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d("Aplikacia", "DetailFragment.onActivityCreated zaciatok");
+        Log.d("Aplikacia", "DetailFragment.onActivityCreated zaciatok " + Integer.toHexString(System.identityHashCode(this)));
         super.onActivityCreated(savedInstanceState);
 //        if( savedInstanceState == null) {
 //            TextView textView = (TextView) getActivity().findViewById(R.id.detailText);
@@ -115,6 +116,7 @@ public class DetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        Log.d("Aplikacia", "DetailFragment.onDetach " + Integer.toHexString(System.identityHashCode(this)));
     }
 
     /**

@@ -14,8 +14,7 @@ public enum Selection {
         this.text = text;
     }
 
-    @Override
-    public String toString() {
+    public String toInfoString() {
         return text;
     }
 }

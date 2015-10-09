@@ -69,9 +69,9 @@ public class ControlFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         if( savedInstanceState != null ) {
+            Log.d("Aplikacia", "ControlFragment.onCreate savedInstanceState.getString(STATE_SELECTION) = " + savedInstanceState.getString(STATE_SELECTION));
             selection = Selection.valueOf(savedInstanceState.getString(STATE_SELECTION));
-            ((TextView)(getActivity().findViewById(R.id.selection))).setText(selection.toString());
-            Log.d("Applikacia", "ControlFragment.onCreate selection = " +  selection.toString());
+            Log.d("Applikacia", "ControlFragment.onCreate selection = " +  selection.toInfoString());
         }
     }
 
@@ -89,13 +89,15 @@ public class ControlFragment extends Fragment {
 
         Log.d("Aplikacia", "ControlFragment.onActivityCreated");
 
-        ((TextView)(getActivity().findViewById(R.id.selection))).setText(selection.toString());
+        ((TextView)(getActivity().findViewById(R.id.selection))).setText(selection.toInfoString());
 
         Button buttonA = (Button) getActivity().findViewById(R.id.buttonA);
         buttonA.setOnClickListener(new ButtonAListener());
 
         Button buttonB = (Button) getActivity().findViewById(R.id.buttonB);
         buttonB.setOnClickListener(new ButtonBListener());
+
+        //mListener.onChange(selection);
     }
 
     @Override
@@ -135,9 +137,13 @@ public class ControlFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface MainFragmentListener {
+        //public void onInit(Selection selection);
         public void onChange(Selection selection);
     }
 
+    public Selection getSelection() {
+        return selection;
+    }
 
     private class ButtonAListener implements View.OnClickListener {
 
@@ -145,7 +151,7 @@ public class ControlFragment extends Fragment {
         public void onClick(View v) {
             Log.d("Aplikacia", "kliknute tlacidlo A");
             selection = Selection.A;
-            ((TextView)(getActivity().findViewById(R.id.selection))).setText(selection.toString());
+            ((TextView)(getActivity().findViewById(R.id.selection))).setText(selection.toInfoString());
             if (mListener != null) {
                 mListener.onChange(selection);
             }
@@ -158,7 +164,7 @@ public class ControlFragment extends Fragment {
         public void onClick(View v) {
             Log.d("Aplikacia", "kliknute tlacidlo B");
             selection = Selection.B;
-            ((TextView)(getActivity().findViewById(R.id.selection))).setText(selection.toString());
+            ((TextView)(getActivity().findViewById(R.id.selection))).setText(selection.toInfoString());
             if (mListener != null) {
                 mListener.onChange(selection);
             }

@@ -2,6 +2,7 @@ package net.useobjects.fragmenty;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,33 @@ public class MainActivity extends ActionBarActivity implements ControlFragment.M
         Log.d("Aplikacia", "MainActivity.onCreate pred volanim setContentView");
         setContentView(R.layout.activity_main);
 
-        Log.d("Aplikacia", "MainActivity.onCreate koniec");
+        if( getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ) {
+
+            Selection selection = ((ControlFragment) (getSupportFragmentManager().findFragmentById(R.id.fragment_control))).getSelection();
+            DetailFragment detail = DetailFragment.newInstance(selection);
+
+            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_detail, detail);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+
+        }
+
+        Log.d("Aplikacia", "MainActivity.onCreate koniec <<<<<<<<<");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+//        DetailFragment detail = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
+//        if( detail != null ) {
+//            Log.d("Aplikacia", "MainActivity.onDestroy detail = " + Integer.toHexString(System.identityHashCode(detail)));
+//            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.remove(detail);
+//            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//            ft.commit();
+//        }
     }
 
     @Override
@@ -46,11 +73,11 @@ public class MainActivity extends ActionBarActivity implements ControlFragment.M
 
     @Override
     public void onChange(Selection selection) {
-        showDetail(selection.toString());
+        showDetail(selection);
     }
 
-    private void showDetail(String info) {
-        Log.d("Aplikacia", "MainActiviy.showDetail (info = " + info + ")");
+    private void showDetail(Selection selection) {
+        Log.d("Aplikacia", "MainActiviy.showDetail (info = " + selection.toInfoString() + ")");
 
         View  detailFragment = findViewById(R.id.fragment_detail);
         //DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
@@ -62,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements ControlFragment.M
             DetailFragment detail = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
 
             //if(detail == null) { //alebo existuje ale zobrazuje nieco ine
-                detail = DetailFragment.newInstance(info);
+                detail = DetailFragment.newInstance(selection);
 
                 android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_detail, detail);
@@ -73,7 +100,7 @@ public class MainActivity extends ActionBarActivity implements ControlFragment.M
         else {
             Intent intent = new Intent();
             intent.setClass(this, DetailActivity.class);
-            intent.putExtra("info", info);
+            intent.putExtra("info", selection.toInfoString());
             startActivity(intent);
         }
 
